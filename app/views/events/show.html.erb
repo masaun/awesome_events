@@ -53,6 +53,10 @@
         <%= link_to 'イベントを削除する', event_path(@event), class: 'btn btn-info btn-lg btn-block', method: :delete, date: { confirm: '本当に削除しますか？' } %>
       <% end %>
 
+      <% if @ticket %>
+        <%= link_to '参加をキャンセルする', event_ticket_path(@event), class: 'btn btn-danger btn-lg btn-block', method: :delete, data: { confirm: '本当に削除しますか？' } %>
+      <% elsif logged_in? %>
+
       <% if logged_in? %>
         <button class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#createTicket">
           参加する
@@ -80,5 +84,24 @@
       <% else %>
         <%= link_to '参加する', new_event_ticket_path(@event), class: "btn btn-primary btn-lg btn-block" %>
       <% end %>
+      <hr>
+      <div class="panel panel-default">
+        <div class="list-unstyled">
+          参加者
+        </div>
+        <div class="panel-body">
+          <ul class="list-unstyled">
+            <% @tickets.each do |ticket| %>
+              <li>
+                <% link_to(url_for_twitter(ticket.user)) %>
+                  <%= image_tag ticket.user.image_url, width: 20, height: 20 %>
+                  <%= "@#{ ticket.user.nickname }" %>  
+                <% end %>
+                <%= ticket.comment %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
