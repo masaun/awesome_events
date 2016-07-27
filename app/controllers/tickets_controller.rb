@@ -17,4 +17,10 @@ class TicketsController < ApplicationController
       render json: { messages: ticket.error.full_messages }, status: 422
     end
   end
+
+  def destroy
+    ticket = current_user.tickets.find_by!(event_id: params_id)
+    ticket.destroy!
+    redirect_to event_path(params[:event_id]), notice: 'このイベントの参加をキャンセルしました'
+  end
 end
