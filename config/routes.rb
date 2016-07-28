@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   get '/logout' => 'sessions#destroy', as: :logout
 
   resources :events do
+    resources :retire
+  end
+
+  resources :events do
     resources :tickets
   end
   # The priority is based upon order of creation: first created -> highest priority.
