@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
 
-  before_action :authenticate
+  before_action :authenticate, except: :show
 
   def new
     @event = current_user.create_events.build(event_params)
@@ -17,6 +17,8 @@ class EventsController < ApplicationController
 
   def show
     @events = Event.find(params[:id])
+    @ticket = current_user && current_user.tickets.find_by(event_id: params[:id])
+    @tickets = @event.tickets.includes(:user).order(:created_at)
   end
 
   def edit
