@@ -1,9 +1,9 @@
 class EventsController < ApplicationController
 
-  before_action :authenticate
+  before_action :authenticate, except: :show
 
   def new
-    @event = current_user.create_events.build(event_params)
+    @event = current_user.created_events.build
   end
 
   def create
@@ -17,6 +17,8 @@ class EventsController < ApplicationController
 
   def show
     @events = Event.find(params[:id])
+    @ticket = current_user && current_user.tickets.find_by(event_id: params[:id])
+    @tickets = @event.tickets.includes(:user).order(:created_at)
   end
 
   def edit
@@ -37,11 +39,12 @@ class EventsController < ApplicationController
     redirect_to root_path, notice: '削除しました'
   end
 
+
   private
 
   def event_params
     params.require(:event).permit(
-      :name, :place, :content, :start_time, :end_time
+      :name, :place, :event_image, :event_image_cache, :remove_event_image, :content, :start_time, :end_time
     )
   end
 
