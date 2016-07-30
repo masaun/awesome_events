@@ -9,20 +9,20 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, ActionController::RoutingError, with: :error404
 
   def error404(e)
-    render 'error404', status: 404, formats :[:html]
+    render 'error404', status: 404, formats: [:html]
   end
 
   def error500(e)
-    logger.error [e, *e.backtrace].join("¥n")
+    logger.error [e, *e.backtrace].join("¥n");
     render 'error500', status: 500, formats: [:html]
   end
 
 
   private
 
-  def currnent_user
+  def current_user
     return unless session[:user_id]
-    @currnent_user ||= User.find(session[:user_id])
+    @current_user ||= User.find(session[:user_id])
   end
 
   def logged_in?
